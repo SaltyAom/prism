@@ -39,10 +39,10 @@ module.exports = withPlugins(
 							urlPattern: /.js$|.css$|.svg$|.jpg$|.png$/,
 							handler: "CacheFirst"
 						},
-						{
-							urlPattern: /\/music\/*/,
-							handler: "NetworkOnly"
-						}
+						// {
+						// 	urlPattern: /\/music\/*/,
+						// 	handler: "NetworkOnly"
+						// }
 					]
 				}
 			}
