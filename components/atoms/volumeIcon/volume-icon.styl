@@ -1,0 +1,26 @@
+#volume-icon
+    display flex
+    justify-content center
+    align-items center
+    width 56px
+    height 56px
+    padding 16px
+    border-radius 4px
+    outline none
+    cursor pointer
+    transition background-color .15s ease-out
+
+    &:hover,
+    &:focus
+        background-color rgba(255,255,255,.1)
+
+    & > .fill
+        fill var(--light-text)
+
+    &.-light
+        &:hover,
+        &:focus
+            background-color rgba(0,0,0,.1)
+
+        & > .fill
+            fill var(--dark-text)

@@ -1,0 +1,73 @@
+#track-slider
+    position relative
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+    width calc(100% - 44px)
+    animation track-slider-appear .5s ease-out 0s 1
+
+@keyframes track-slider-appear
+    0%
+        opacity 0
+        transform scale(.85)
+
+    20%
+        opacity 1
+        transform scale(.85)
+
+#slider
+    -webkit-appearance none
+    width 100%
+    padding 8px 0 4px 0
+    background transparent
+    will-change width
+    outline none
+
+    &::-webkit-slider-thumb
+        -webkit-appearance none
+        background #fff
+        height 4px
+        width 16px
+        border 2px solid transparent
+        border-radius 8px
+
+    &::-webkit-slider-runnable-track
+        width 300px
+        height 4px
+        background rgba(255,255,255,.25)
+        border-radius 2px
+
+    &.-light
+        &::-webkit-slider-thumb
+            background var(--dark-text)
+
+        &::-webkit-slider-runnable-track
+            background rgba(0,0,0,.25)
+
+#process
+    top 10px
+    left 0
+    max-width 100%
+    position absolute
+    height 4px
+    background #fff
+    border-radius 2px
+
+    &.-light
+        background var(--dark-text)
+
+#track-time
+    display flex
+    flex-direction row
+    justify-content space-between
+    align-items center
+    width 100%
+    padding 0 8px
+
+#track-current-time,
+#track-end-time
+    font-size 14px
+    font-weight 400
+    margin 0
+    opacity .375

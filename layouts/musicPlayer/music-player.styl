@@ -1,0 +1,33 @@
+#music-player
+    display flex
+    flex-direction column
+    justify-content space-between
+    align-items center
+    width 100%
+    height 100vh
+    padding calc(5vh + env(safe-area-inset-top)) calc(2.5% + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(2.5% + env(safe-area-inset-left))
+    transition background-color .2s ease-out
+
+    @media screen and (max-height 568px) and (orientation landscape)
+        flex-direction row
+
+    @media screen and (max-width 568px) and (min-height 768px)
+        padding-top calc(7.5vh + env(safe-area-inset-top))
+
+#music-visual
+    flex 1
+    display flex
+    flex-direction column
+    justify-content space-around
+    align-items center
+    width 100%
+
+    @media screen and (min-width 415px)
+        width 414px
+
+#music-detail
+    display flex
+    flex-direction column
+    justify-content flex-start
+    align-items center
+    width 100%

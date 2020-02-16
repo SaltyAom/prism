@@ -1,0 +1,40 @@
+{
+    "presets": ["next/babel", "@babel/preset-typescript"],
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "root": ["."],
+                "alias": {
+                    "pages": "./pages",
+                    "styles": "./public/styles",
+                    "fonts": "./public/fonts",
+                    "images": "./public/images",
+                    "components": "./components",
+                    "~": "./",
+                    "libs": "./libs",
+                    "pageTypes": "./pageTypes",
+                    "stores": "./stores",
+                    "layouts": "./layouts"
+                }
+            }
+        ]
+    ],
+    "env": {
+        "production": {
+            "presets": [
+                [
+                    "next/babel",
+                    {
+                        "preset-env": {
+                            "targets": {
+                                "browsers": ["> 0.25%, not dead"]
+                            }
+                        }
+                    }
+                ],
+                ["minify"]
+            ]
+        }
+    }
+}

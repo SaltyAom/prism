@@ -1,0 +1,47 @@
+#music-header
+    display flex
+    flex-direction row
+    justify-content center
+    align-items center
+    width 100%
+    padding 0 8px
+
+    @media screen and (min-width 568px)
+        width calc(100vh - 340px)
+        padding 0
+
+    @media screen and (max-height 568px) and (orientation landscape)
+        flex 1
+        width 50%
+        height 100%
+        padding 5vh 32px calc(10vh + env(safe-area-inset-top)) 32px
+
+#music-cover
+    max-width calc(100vh - 340px)
+    max-height calc(100vh - 340px)
+    object-fit cover
+    object-position center
+    margin 0 0 12px 0
+    border-radius 8px
+    box-shadow 0 8px 32px rgba(0,0,0,.5)
+    transition max-height .2s ease-out, max-width .25s ease-out, box-shadow .25s ease-out
+    animation music-cover-appear .5s ease-out 0s 1
+
+    &.-collapse
+        max-width 80px
+        max-height 80px
+        box-shadow 0 2px 8px rgba(0,0,0,.25) !important
+
+    @media screen and (max-height 568px) and (orientation landscape)
+        max-width 100%
+        max-height 100%
+        margin 0
+
+@keyframes music-cover-appear
+    0%
+        opacity 0
+        transform scale(.85)
+
+    30%
+        opacity 1
+        transform scale(.85)
