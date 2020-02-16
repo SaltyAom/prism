@@ -31,11 +31,16 @@ module.exports = withPlugins(
 			withOffline,
 			{
 				dontAutoRegisterSw: true,
+				globPattern: "*public/**/*",
 				workboxOpts: {
 					swDest: "static/service-worker.js",
 					runtimeCaching: [
 						{
-							urlPattern: /.js$|.ttf$|.otf$|.css$|.svg$|.jpg$|.png$/,
+							urlPattern: /.js$|.css$|.svg$|.jpg$|.png$/,
+							handler: "CacheFirst"
+						},
+						{
+							urlPattern: /\/music\/*/,
 							handler: "CacheFirst"
 						}
 					]
