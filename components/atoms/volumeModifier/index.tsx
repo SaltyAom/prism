@@ -36,6 +36,7 @@ const VolumeModifier = () => {
                 type="range"
                 min={0}
                 max={100}
+                onChange={() => handleDrag()}
                 onInput={() => handleDrag()}
             />
             <div

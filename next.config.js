@@ -27,21 +27,21 @@ module.exports = withPlugins(
 				]
 			}
 		],
-		[
-			withOffline,
-			{
-				dontAutoRegisterSw: true,
-				workboxOpts: {
-					swDest: "static/service-worker.js",
-					runtimeCaching: [
-						{
-							urlPattern: /.js$|.ttf$|.otf$|.css$|.svg$|.jpg$|.png$/,
-							handler: "CacheFirst"
-						}
-					]
-				}
-			}
-		]
+		// [
+		// 	withOffline,
+		// 	{
+		// 		dontAutoRegisterSw: true,
+		// 		workboxOpts: {
+		// 			swDest: "static/service-worker.js",
+		// 			runtimeCaching: [
+		// 				{
+		// 					urlPattern: /.js$|.ttf$|.otf$|.css$|.svg$|.jpg$|.png$/,
+		// 					handler: "CacheFirst"
+		// 				}
+		// 			]
+		// 		}
+		// 	}
+		// ]
 	],
 	{
 		// target: "serverless",

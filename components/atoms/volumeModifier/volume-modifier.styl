@@ -14,6 +14,8 @@
     background transparent
     will-change width
     outline none
+    -webkit-tap-highlight-color transparent
+    touch-action pan-x
 
     &::-webkit-slider-thumb
         -webkit-appearance none
@@ -23,12 +25,15 @@
         border 2px solid transparent
         border-radius 8px
         margin-top -6px
+        -webkit-tap-highlight-color transparent
+        touch-action pan-x
 
     &::-webkit-slider-runnable-track
         width 300px
         height 4px
         background rgba(255,255,255,.25)
         border-radius 2px
+        touch-action pan-x
 
     &.-light
         &::-webkit-slider-thumb
