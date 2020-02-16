@@ -41,7 +41,7 @@ module.exports = withPlugins(
 						},
 						{
 							urlPattern: /\/music\/*/,
-							handler: "CacheFirst"
+							handler: "StaleWhileRevalidate"
 						}
 					]
 				}
