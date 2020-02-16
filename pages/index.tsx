@@ -1,9 +1,9 @@
 import { NextPage } from "next"
 
-import MusicPlayerLayout from "layouts/musicPlayer"
+import MusicPlayer from "layouts/musicPlayer"
 
 import ILanding from "pageTypes/index"
 
-const Landing: NextPage<ILanding> = () => <MusicPlayerLayout />
+const Landing: NextPage<ILanding> = () => <MusicPlayer />
 
 export default Landing

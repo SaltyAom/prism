@@ -16,7 +16,7 @@
 		"test:all": "jest && tsc && tslint 'src/**/*.{ts,tsx}'"
 	},
 	"dependencies": {
-		"arkflows": "^0.4.0-beta.0",
+		"arkflows": "^0.4.0-beta.1",
 		"fast-average-color": "^6.0.1",
 		"next": "^9.2.1",
 		"preact": "^10.2.1",
@@ -42,7 +42,6 @@
 		"jest": "^25.1.0",
 		"next-compose-plugins": "^2.2.0",
 		"next-offline": "^4.0.6",
-		"next-server": "^9.0.5",
 		"optimize-css-assets-webpack-plugin": "^5.0.3",
 		"react": "^16.12.0",
 		"react-dom": "^16.12.0",

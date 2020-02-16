@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react'
 
-import Head from "next/head"
+import Head from 'next/head'
 
 import store from 'stores'
 
@@ -50,7 +50,10 @@ const MusicPlayerLayout: MusicPlayerType = () => {
                 >
                     <Cover />
                     <div id="music-visual">
-                        <section id="music-detail" style={{ display: isCollapse ? "none" : "" }}>
+                        <section
+                            id="music-detail"
+                            style={{ display: isCollapse ? 'none' : 'flex' }}
+                        >
                             <Info />
                             <Slider />
                             <Controller />

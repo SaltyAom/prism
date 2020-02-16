@@ -13,6 +13,7 @@ const VolumeModifier = () => {
     useEffect(() => {
         if (isServer) return
 
+        (document.getElementById("volume-slider") as HTMLInputElement).value = `100`
         updateVolume(window.music.volume * 100)
         updateTheme(store.get('isLight'))
         store.subscribe('isLight', (state: any) => updateTheme(state))
@@ -35,7 +36,6 @@ const VolumeModifier = () => {
                 type="range"
                 min={0}
                 max={100}
-                value={volume}
                 onInput={() => handleDrag()}
             />
             <div

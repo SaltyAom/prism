@@ -31,6 +31,8 @@ const MusicCover = () => {
             updateCollapse(state)
         })
 
+        loaded(document.getElementById("music-cover"))
+
         return () => {
             active$.unsubscribe()
             showPlaylist$.unsubscribe()
