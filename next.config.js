@@ -41,7 +41,7 @@ module.exports = withPlugins(
 						},
 						{
 							urlPattern: /\/music\/*/,
-							handler: "StaleWhileRevalidate"
+							handler: "NetworkOnly"
 						}
 					]
 				}
