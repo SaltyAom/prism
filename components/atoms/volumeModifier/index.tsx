@@ -1,30 +1,19 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useContext } from 'react'
 
 import store from 'stores'
 
-import { isServer } from 'libs/helpers'
+import { Metadata } from 'components/atoms/metadataProvider'
 
 import './volume-modifier.styl'
 
 const VolumeModifier = () => {
-    let [isLight, updateTheme] = useState(store.get('isLight')),
-        [volume, updateVolume] = useState(100)
-
-    useEffect(() => {
-        if (isServer) return
-
-        (document.getElementById("volume-slider") as HTMLInputElement).value = `100`
-        updateVolume(window.music.volume * 100)
-        updateTheme(store.get('isLight'))
-        store.subscribe('isLight', (state: any) => updateTheme(state))
-    }, [])
+    let { isLight, volume } = useContext(Metadata)
 
     let handleDrag = useCallback(() => {
         let slider = document.getElementById('volume-slider') as HTMLInputElement,
             value = +slider.value
         
-        updateVolume(value)
-        store.set("volume", value / 100)
+        store.set("volume", value)
         window.music.volume = value / 100
     }, [])
 
@@ -36,6 +25,7 @@ const VolumeModifier = () => {
                 type="range"
                 min={0}
                 max={100}
+                value={volume}
                 onChange={() => handleDrag()}
                 onInput={() => handleDrag()}
             />

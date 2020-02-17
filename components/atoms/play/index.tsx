@@ -1,6 +1,8 @@
-import { useState, useEffect, memo, useCallback } from 'react'
+import { useContext, useRef, useEffect } from 'react'
 
 import store from 'stores'
+
+import { Metadata } from 'components/atoms/metadataProvider'
 
 import { isServer } from 'libs/helpers'
 
@@ -8,37 +10,13 @@ import './play.styl'
 
 import './types'
 
-const Skip = memo(() => {
-    let [isLight, updateTheme] = useState(store.get('isLight')),
-        [isPlaying, setPlaying] = useState(false)
+const Skip = () => {
+    let { isLight, isPlaying } = useContext(Metadata)
+
+    let initIsPlaying = useRef(true)
 
     useEffect(() => {
-        updateTheme(store.get('isLight'))
-        store.subscribe('isLight', (state: boolean) => updateTheme(state))
-
         if (isServer) return
-
-        window.music = new Audio(store.get('track')[store.get('active')].src)
-        store.subscribe('active', (index: number) => {
-            let volume = `${window.music.volume}`
-
-            window.music.pause()
-            window.music = new Audio(store.get('track')[+index].src)
-            window.music.play()
-            window.music.volume = +volume
-
-            setPlaying(true)
-            window.music.onended = () => musicEnded()
-        })
-
-        window.music.onended = () => musicEnded()
-
-        store.subscribe('isPlaying', (state: boolean) => {
-            if (!state) window.music.pause()
-            else window.music.play()
-
-            setPlaying(state)
-        })
 
         document.addEventListener('keydown', ({ code }) => {
             if (code !== 'Space') return
@@ -50,14 +28,22 @@ const Skip = memo(() => {
         return () => window.music.pause()
     }, [])
 
-    let musicEnded = useCallback(() => {
-        setPlaying(false)
-    }, [])
+    useEffect(() => {
+        if (isServer) return
+        if (initIsPlaying.current) {
+            initIsPlaying.current = false
+            return
+        }
+
+        // Synchronous with isPlaying
+        if (isPlaying) window.music.play()
+        else window.music.pause()
+    }, [isPlaying])
 
     return isPlaying ? (
         <button
             id="play-track-button"
-            onClick={() => store.set('isPlaying', !isPlaying)}
+            onClick={() => store.set('isPlaying', false)}
         >
             <svg
                 id="play-track"
@@ -76,7 +62,7 @@ const Skip = memo(() => {
     ) : (
         <button
             id="play-track-button"
-            onClick={() => store.set('isPlaying', !isPlaying)}
+            onClick={() => store.set('isPlaying', true)}
         >
             <svg
                 id="play-track"
@@ -93,6 +79,6 @@ const Skip = memo(() => {
             </svg>
         </button>
     )
-})
+}
 
 export default Skip

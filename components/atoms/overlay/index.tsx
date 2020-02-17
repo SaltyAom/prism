@@ -1,20 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useContext } from 'react'
 
-import store from 'stores'
+import { Metadata } from 'components/atoms/metadataProvider'
 
 import './overlay.styl'
 
-const Overlay = () => {
-    let [coverImage, updateCover] = useState('')
-
-    useEffect(() => {
-        updateCover(store.get('track')[+store.get('active')].cover)
-        store.subscribe('active', (index: number) =>
-            updateCover(store.get('track')[index].cover)
-        )
-    }, [])
-
-    return <img id="music-overlay" src={coverImage} />
-}
+const Overlay = () => (
+    <img id="music-overlay" src={useContext(Metadata).track.cover} />
+)
 
 export default Overlay

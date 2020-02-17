@@ -1,57 +1,45 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useContext } from 'react'
 
 import store from 'stores'
 
-import FastAverageColor from 'fast-average-color/dist'
+import Info from 'components/molecules/info'
 
-import Info from "components/molecules/info"
+import FastAverageColor from 'fast-average-color/dist'
+import { Metadata } from 'components/atoms/metadataProvider'
 
 import { isServer } from 'libs/helpers'
 
 import './music-cover.styl'
 
 const MusicCover = () => {
-    let [width, updateWidth] = useState(0),
-        [coverImage, updateCover] = useState(''),
-        [isCollapse, updateCollapse] = useState(false)
+    let [width, updateWidth] = useState(0)
+
+    let { showingPlaylist, track } = useContext(Metadata)
 
     useEffect(() => {
         if (isServer) return
 
         updateWidth(window.innerWidth)
-
-        window.addEventListener('resize', () => updateWidth(window.innerWidth))
-
-        updateCover(store.get('track')[+store.get('active')].cover)
-
-        let active$ = store.subscribe('active', (index: number) =>
-            updateCover(store.get('track')[index].cover)
-        ),
-        showPlaylist$ = store.subscribe("showPlaylist", (state: boolean) => {
-            updateCollapse(state)
-        })
-
-        loaded(document.getElementById("music-cover"))
-
-        return () => {
-            active$.unsubscribe()
-            showPlaylist$.unsubscribe()
-        }
+        window.addEventListener('resize', () => 
+            () => updateWidth(window.innerWidth)
+        )
     }, [])
 
     let loaded = useCallback(image => {
-        let color = new FastAverageColor(),
-            { isLight } = color.getColor(image)
+        let color = new FastAverageColor()
 
-        setTimeout(() => store.set('isLight', isLight), 100)
+        setTimeout(
+            () => store.set('isLight', color.getColor(image).isLight),
+            100
+        )
     }, [])
 
     return (
         <header id="music-header">
             <img
                 id="music-cover"
-                className={isCollapse ? "-collapse" : ""}
-                src={coverImage}
+                className={showingPlaylist ? '-collapse' : ''}
+                src={track.cover}
                 onLoad={() => loaded(event.target)}
                 style={{
                     width: width * 0.85,
@@ -59,7 +47,7 @@ const MusicCover = () => {
                     boxShadow: `0 12px 40px rgba(0,0,0,.625)`,
                 }}
             />
-            { isCollapse ? <Info alignLeft /> : null }
+            {showingPlaylist ? <Info alignLeft /> : null}
         </header>
     )
 }

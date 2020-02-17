@@ -1,29 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 
-import store from 'stores'
+import store from "stores"
+
+import { Metadata } from 'components/atoms/metadataProvider'
+
+import { getNextTrack } from 'libs/track'
 
 import './track-name.styl'
 
 const TrackName = () => {
-    let [isLight, updateTheme] = useState(false),
-        [nextTrack, updateNextTrack] = useState('')
+    let { isLight, active } = useContext(Metadata)
+
+    let [ nextTrack, updateNextTrack ] = useState("")
 
     useEffect(() => {
-        store.subscribe('isLight', (state: any) => updateTheme(state))
-
-        updateNextTrack(
-            store.get('active') + 1 < store.get('track').length
-                ? store.get('track')[+store.get('active') + 1].title
-                : store.get('track')[0].title
-        )
-        store.subscribe('active', (index: number) =>
-            updateNextTrack(
-                index + 1 < store.get('track').length
-                    ? store.get('track')[+index + 1].title
-                    : store.get('track')[0].title
-            )
-        )
-    }, [])
+        updateNextTrack(store.get("track")[getNextTrack()].title)
+    }, [active])
 
     return (
         <article id="track-next">

@@ -1,25 +1,19 @@
-import { useEffect, useState } from 'react'
+import { memo, useContext } from 'react'
 
-import store from 'stores'
+import { Metadata } from 'components/atoms/metadataProvider'
 
 import './title.styl'
 
-const Title = ({ children }) => {
-    let [isLight, updateTheme] = useState(false)
-
-    useEffect(() => {
-        updateTheme(store.get("isLight"))
-        store.subscribe('isLight', (state: any) => updateTheme(state))
-    }, [])
-
-    return (
+const Title = memo(({ children }) => (
         <h1
             id="music-title"
-            style={{ color: isLight ? 'var(--dark-text)' : 'var(--light-text)' }}
+            style={{
+                color: useContext(Metadata).isLight ? 'var(--dark-text)' : 'var(--light-text)',
+            }}
         >
             {children}
         </h1>
     )
-}
+)
 
 export default Title

@@ -1,9 +1,8 @@
-import { Fragment, useEffect, useState } from 'react'
+import { useContext } from 'react'
 
 import Head from 'next/head'
 
-import store from 'stores'
-
+import { Metadata } from 'components/atoms/metadataProvider'
 import ErrorBoundary from 'components/atoms/errorBoundary'
 import Slider from 'components/atoms/slider'
 import Overlay from 'components/atoms/overlay'
@@ -18,52 +17,38 @@ import './music-player.styl'
 import MusicPlayerType from './types'
 
 const MusicPlayerLayout: MusicPlayerType = () => {
-    let [isLight, updateTheme] = useState(false),
-        [isCollapse, updateCollapse] = useState(false)
-
-    useEffect(() => {
-        store.subscribe('isLight', (state: boolean) => {
-            updateTheme(state)
-
-            if (state) document.body.style.backgroundColor = '#fff'
-            else document.body.style.backgroundColor = '#000'
-        })
-
-        store.subscribe('showPlaylist', (state: boolean) =>
-            updateCollapse(state)
-        )
-    }, [])
+    let { showingPlaylist, isLight } = useContext(Metadata)
 
     return (
         <ErrorBoundary>
-            <Fragment>
-                <Head>
-                    <title>Prism</title>
-                </Head>
-                <main
-                    id="music-player"
-                    style={{
-                        backgroundColor: isLight
-                            ? `rgba(255,255,255,.2)`
-                            : `rgba(0,0,0,.2)`,
-                    }}
-                >
-                    <Cover />
-                    <div id="music-visual">
-                        <section
-                            id="music-detail"
-                            style={{ display: isCollapse ? 'none' : 'flex' }}
-                        >
-                            <Info />
-                            <Slider />
-                            <Controller />
-                        </section>
-                        <Footer />
-                        {isCollapse ? <Playlists /> : null}
-                    </div>
-                </main>
-                <Overlay />
-            </Fragment>
+            <Head>
+                <title>Prism</title>
+            </Head>
+            <main
+                id="music-player"
+                style={{
+                    backgroundColor: isLight
+                        ? `rgba(255,255,255,.2)`
+                        : `rgba(0,0,0,.2)`,
+                }}
+            >
+                <Cover />
+                <div id="music-visual">
+                    <section
+                        id="music-detail"
+                        style={{
+                            display: showingPlaylist ? 'none' : 'flex',
+                        }}
+                    >
+                        <Info />
+                        <Slider />
+                        <Controller />
+                    </section>
+                    <Footer />
+                    {showingPlaylist ? <Playlists /> : null}
+                </div>
+            </main>
+            <Overlay />
         </ErrorBoundary>
     )
 }

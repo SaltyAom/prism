@@ -18,6 +18,8 @@
 
 #slider
     -webkit-appearance none
+    -moz-appearance none
+    z-index 100
     width 100%
     padding 8px 0 4px 0
     background transparent
@@ -28,6 +30,8 @@
 
     &::-webkit-slider-thumb
         -webkit-appearance none
+        -moz-appearance none
+        appearance none
         background #fff
         height 4px
         width 16px
@@ -35,6 +39,12 @@
         border-radius 8px
         -webkit-tap-highlight-color transparent
         touch-action pan-x
+
+    &::-moz-range-thumb
+        appearance none
+        top 0
+        border 0
+        background-color transparent
 
     &::-webkit-slider-runnable-track
         width 300px

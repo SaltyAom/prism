@@ -1,23 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useContext, memo } from 'react'
 
 import store from 'stores'
 
-import { isServer } from 'libs/helpers'
+import { Metadata } from 'components/atoms/metadataProvider'
 
 import './volume-icon.styl'
 
-const VolumeIcon = () => {
-    let [volume, updateVolume] = useState(0),
-        [isLight, updateLight] = useState(false)
-
-    useEffect(() => {
-        if (isServer) return
-
-        setTimeout(() => updateVolume(window.music.volume), 50)
-
-        store.subscribe('isLight', (state: boolean) => updateLight(state))
-        store.subscribe('volume', (state: number) => updateVolume(state))
-    }, [])
+const VolumeIcon = memo(() => {
+    let { isLight, volume } = useContext(Metadata)
 
     switch (true) {
         case volume === 0:
@@ -104,6 +94,6 @@ const VolumeIcon = () => {
                 </svg>
             )
     }
-}
+})
 
 export default VolumeIcon

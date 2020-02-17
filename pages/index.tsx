@@ -1,9 +1,16 @@
-import { NextPage } from "next"
+import { memo } from 'react'
 
-import MusicPlayer from "layouts/musicPlayer"
+import { NextPage } from 'next'
 
-import ILanding from "pageTypes/index"
+import MusicPlayer from 'layouts/musicPlayer'
+import MetadataProvider from 'components/atoms/metadataProvider'
 
-const Landing: NextPage<ILanding> = () => <MusicPlayer />
+import ILanding from 'pageTypes/index'
+
+const Landing: NextPage<ILanding> = memo(() => (
+    <MetadataProvider>
+        <MusicPlayer />
+    </MetadataProvider>
+))
 
 export default Landing
