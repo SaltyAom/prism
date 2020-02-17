@@ -19,9 +19,9 @@ const track = [
 
 store.create("isPlaying", false)
 store.create("isLight", true)
-store.create("active", "1")
+store.create("active", 0)
 store.create("track", track)
-store.create("time", "0")
+store.create("time", 0)
 store.create("showPlaylist", false)
 store.create("volume", 0)
 store.create("editVolume", false)

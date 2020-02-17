@@ -1,36 +1,31 @@
-import { useState, useEffect } from 'react'
+import { memo, useContext, useMemo } from 'react'
 
 import store from 'stores'
 
-import List from '../list'
+import { Metadata } from 'components/atoms/metadataProvider'
+import List from 'components/molecules/list'
 
 import './playlists.styl'
 
-const Playlists = () => {
-    let [playlist, updatePlaylist] = useState([]),
-        [isLight, updateLight] = useState(store.get("isLight"))
+const Playlists = memo(() => {
+    let { isLight } = useContext(Metadata)
 
-    useEffect(() => {
-        updatePlaylist(store.get('track'))
-        store.subscribe('track', (state: any) => updatePlaylist(state))
-
-        updateLight(store.get('isLight'))
-        store.subscribe('isLight', (state: boolean) => updateLight(state))
-    }, [])
+    let playlists = useMemo(() => store.get("track"), [])
 
     return (
         <ol id="music-playlists">
-            {playlist.map(({ title, artist, cover }, index) => (
+            {playlists.map(({ title, artist, cover }, index) => (
                 <List
                     title={title}
                     artist={artist}
                     cover={cover}
                     isLight={isLight}
                     index={index}
+                    key={index}
                 />
             ))}
         </ol>
     )
-}
+})
 
 export default Playlists

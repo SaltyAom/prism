@@ -1,48 +1,51 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useContext } from 'react'
 
-import store from 'stores'
+import { Metadata } from 'components/atoms/metadataProvider'
 
 import { isServer, toTimeFormat } from 'libs/helpers'
 
 import './slider.styl'
 
 const Slider = () => {
-    let [isLight, updateTheme] = useState(false),
-        [process, updateProcess] = useState(0),
+    let [process, updateProcess] = useState(0),
         [timer, updateTimer] = useState(0),
         [end, updateEnd] = useState(0)
 
-    let initialEnd = useRef(1)
+    let isDragging = useRef(false),
+        initialEnd = useRef(1)
 
-    let isDragging = useRef(false)
+    let { isLight, active, currentTime, isPlaying } = useContext(Metadata)
 
     useEffect(() => {
         if (isServer) return
 
-        updateTheme(store.get('isLight'))
-        store.subscribe('isLight', (state: any) => updateTheme(state))
-
-        setTimeout(() => init(), 50)
-        store.subscribe('active', () => init())
-
-        store.subscribe(['isPlaying', 'time'], () => updateTime())
-
-        setInterval(() => {
-            if (isDragging.current || window.music.paused) return
-
-            updateTime()
+        let updateSlider = setInterval(() => {
+            if (!window.music.paused && !isDragging.current)
+                updateTime()
         }, 500)
+
+        return () => clearInterval(updateSlider)
     }, [])
+
+    useEffect(() => {
+        if (!isServer)
+            init()
+    }, [active])
+
+    useEffect(() => {
+        if (!isServer && typeof window.music !== "undefined")
+            updateTime()
+    }, [isPlaying, currentTime])
 
     let init = useCallback(
         () =>
             setTimeout(() => {
+                if (isNaN(window.music.duration)) return init()
+
                 let slider = document.getElementById(
                         'slider'
                     ) as HTMLInputElement,
                     value = +slider.value
-
-                if (isNaN(window.music.duration)) return init()
 
                 updateEnd(window.music.duration)
                 initialEnd.current = window.music.duration
@@ -52,6 +55,10 @@ const Slider = () => {
     )
 
     let handleDrag = useCallback(() => {
+        isDragging.current = true
+        if(!window.music.paused)
+            window.music.pause()
+
         let slider = document.getElementById('slider') as HTMLInputElement,
             value = +slider.value
 
@@ -59,6 +66,12 @@ const Slider = () => {
         window.music.currentTime = value
         updateProcess((value / initialEnd.current) * 100)
     }, [])
+
+    let handleDragEnd = () => {
+        isDragging.current = false
+        if(isPlaying)
+            window.music.play()
+    }
 
     let updateTime = useCallback(() => {
         updateTimer(window.music.currentTime)
@@ -74,7 +87,9 @@ const Slider = () => {
                 min={0}
                 max={end}
                 value={timer}
+                onChange={() => handleDrag()}
                 onInput={() => handleDrag()}
+                onMouseUp={() => handleDragEnd()}
             />
             <div
                 id="process"

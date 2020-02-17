@@ -12,9 +12,11 @@
 
     @media screen and (max-height 568px) and (orientation landscape)
         flex 1
-        width 50%
-        height 100%
-        padding 5vh 32px calc(10vh + env(safe-area-inset-top)) 32px
+        width 80vh
+        height 80vh
+        padding 5vh 5vh calc(10vh + env(safe-area-inset-top)) 5vh
+        max-width 80vh
+        max-height 80vh
 
 #music-cover
     max-width calc(100vh - 340px)
@@ -24,7 +26,7 @@
     margin 0 0 12px 0
     border-radius 8px
     box-shadow 0 8px 32px rgba(0,0,0,.5)
-    transition max-height .2s ease-out, max-width .25s ease-out, box-shadow .25s ease-out
+    transition max-height .5s cubic-bezier(.01,.94,.72,1.02), max-width .5s cubic-bezier(.01,.94,.72,1.02), box-shadow .5s cubic-bezier(.01,.94,.72,1.02)
     animation music-cover-appear .5s ease-out 0s 1
 
     &.-collapse

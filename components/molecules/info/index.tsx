@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
+import { useContext } from "react"
 
-import store from "stores"
+import { Metadata } from "components/atoms/metadataProvider"
  
 import Title from 'components/atoms/title'
 import Artist from 'components/atoms/artist'
@@ -10,18 +10,7 @@ import "./music-info.styl"
 import MusicInfoType from "./types"
 
 const MusicInfo: MusicInfoType = ({ alignLeft = false }) => {
-    let [title, updateTitle] = useState(""),
-        [artist, updateArtist] = useState("")
-
-    useEffect(() => {
-        updateTitle(store.get('track')[+store.get('active')].title)
-        updateArtist(store.get('track')[+store.get('active')].artist)
-
-        store.subscribe('active', (index: number) => {
-            updateTitle(store.get('track')[index].title)
-            updateArtist(store.get('track')[index].artist)
-        })
-    }, [])
+    let { track: { title, artist } } = useContext(Metadata)
 
     return (
         <article id="music-info" className={alignLeft ? "-align-left" : ""}>

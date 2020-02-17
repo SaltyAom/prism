@@ -1,6 +1,6 @@
-import { Component } from 'react'
+import { PureComponent, ReactNode } from 'react'
 
-class ErrorBoundary extends Component {
+class ErrorBoundary extends PureComponent<{ children: ReactNode }> {
     static getDerivedStateFromError(error) {
         // console.log(error)
     }

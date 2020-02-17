@@ -27,26 +27,26 @@ module.exports = withPlugins(
 				]
 			}
 		],
-		[
-			withOffline,
-			{
-				dontAutoRegisterSw: true,
-				globPattern: "*public/**/*",
-				workboxOpts: {
-					swDest: "static/service-worker.js",
-					runtimeCaching: [
-						{
-							urlPattern: /.js$|.css$|.svg$|.jpg$|.png$/,
-							handler: "CacheFirst"
-						},
-						// {
-						// 	urlPattern: /\/music\/*/,
-						// 	handler: "NetworkOnly"
-						// }
-					]
-				}
-			}
-		]
+		// [
+		// 	withOffline,
+		// 	{
+		// 		dontAutoRegisterSw: true,
+		// 		globPattern: "*public/**/*",
+		// 		workboxOpts: {
+		// 			swDest: "static/service-worker.js",
+		// 			runtimeCaching: [
+		// 				{
+		// 					urlPattern: /.js$|.css$|.svg$|.jpg$|.png$/,
+		// 					handler: "CacheFirst"
+		// 				},
+		// 				// {
+		// 				// 	urlPattern: /\/music\/*/,
+		// 				// 	handler: "NetworkOnly"
+		// 				// }
+		// 			]
+		// 		}
+		// 	}
+		// ]
 	],
 	{
 		// target: "serverless",
@@ -63,8 +63,8 @@ module.exports = withPlugins(
 
 			config.resolve.alias = {
 				...config.resolve.alias,
-				"react": "preact/compat",
-				"react-dom": "preact/compat",
+				// "react": "preact/compat",
+				// "react-dom": "preact/compat",
 				"react-render-to-string": "preact-render-to-stirng",
 				"pages": join(__dirname, "pages"),
 				"~": join(__dirname, "public"),

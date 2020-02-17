@@ -1,38 +1,30 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useContext } from 'react'
 
 import store from 'stores'
+
+import { Metadata } from 'components/atoms/metadataProvider'
 
 import TrackName from 'components/atoms/trackName'
 
 import './music-playlists-toggler.styl'
 
 const MusicPlaylistsToggler = () => {
-    let [isLight, updateTheme] = useState(false),
-        [isToggle, updateToggle] = useState(false),
-        [isEditing, updateEditing] = useState(false)
-
-    useEffect(() => {
-        updateTheme(store.get('isLight'))
-        store.subscribe('isLight', (state: boolean) => updateTheme(state))
-
-        store.subscribe('editVolume', (state: boolean) => updateEditing(state))
-    }, [])
-
-    let handleToggle = useCallback(() => {
-        store.set('showPlaylist', !isToggle)
-        updateToggle(!isToggle)
-    }, [isToggle])
+    let { isLight, showingPlaylist, editingVolume } = useContext(Metadata)
 
     return (
         <div
             id="music-playlists-toggler"
-            className={`${isEditing ? "-hidden" : ""} ${isLight ? "-light" : ""}`}
-            onClick={() => handleToggle()}
+            className={`${editingVolume ? '-hidden' : ''} ${
+                isLight ? '-light' : ''
+            }`}
+            onClick={() => store.set('showPlaylist', !showingPlaylist)}
         >
             <TrackName />
             <svg
                 id="toggle-icon"
-                className={`${isToggle ? '-close' : ''} ${isLight ? '-light' : ''}`}
+                className={`${showingPlaylist ? '-close' : ''} ${
+                    isLight ? '-light' : ''
+                }`}
                 xmlns="http://www.w3.org/2000/svg"
                 height="24"
                 viewBox="0 0 24 24"

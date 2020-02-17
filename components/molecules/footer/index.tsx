@@ -1,15 +1,13 @@
 import MusicPlaylistsToggler from 'components/atoms/playlists-toggler'
-import VolumeController from '../volumeController'
+import VolumeController from 'components/molecules/volumeController'
 
 import './music-playlists.styl'
 
-const Footer = () => {
-    return (
-        <footer id="music-footer">
-            <MusicPlaylistsToggler />
-            <VolumeController />
-        </footer>
-    )
-}
+const Footer = () => (
+    <footer id="music-footer">
+        <MusicPlaylistsToggler />
+        <VolumeController />
+    </footer>
+)
 
 export default Footer
