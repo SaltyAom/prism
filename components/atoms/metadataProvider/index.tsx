@@ -33,9 +33,12 @@ const MetadataProvider = ({ children }) => {
         if (isServer) return
 
         setGlobalTrack(0)
-        let isLight$ = store.subscribe('isLight', (state: boolean) =>
+        let isLight$ = store.subscribe('isLight', (state: boolean) => {
                 updateLight(state)
-            ),
+
+                if (state) document.body.style.background = '#fff'
+                else document.body.style.background = '#000'
+            }),
             active$ = store.subscribe('active', (next: number) => {
                 // Preserve value
                 let volume = window.music.volume.valueOf()
@@ -54,7 +57,7 @@ const MetadataProvider = ({ children }) => {
                 updatePlaying(state)
             ),
             showPlaylist$ = store.subscribe('showPlaylist', (state: boolean) =>
-                updateShowingPlaylist(state)
+                requestAnimationFrame(() => updateShowingPlaylist(state))
             ),
             editVolume$ = store.subscribe('editVolume', (state: boolean) =>
                 updateEditingVolume(state)

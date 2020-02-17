@@ -20,9 +20,9 @@ const MusicCover = () => {
         if (isServer) return
 
         updateWidth(window.innerWidth)
-        window.addEventListener('resize', () => {
-            requestAnimationFrame(() => updateWidth(window.innerWidth))
-        })
+        window.addEventListener('resize', () => 
+            () => updateWidth(window.innerWidth)
+        )
     }, [])
 
     let loaded = useCallback(image => {

@@ -3,8 +3,6 @@ import { Fragment } from 'react'
 import App from 'next/app'
 import Head from 'next/head'
 
-import MetadataProvider from 'components/atoms/metadataProvider'
-
 import 'styles/init.styl'
 
 class Next extends App {
@@ -34,9 +32,7 @@ class Next extends App {
                         content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
                     />
                 </Head>
-                <MetadataProvider>
-                    <Component {...pageProps} />
-                </MetadataProvider>
+                <Component {...pageProps} />
             </Fragment>
         )
     }
