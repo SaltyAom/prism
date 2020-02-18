@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 
 import Head from 'next/head'
+import dynamic from "next/dynamic"
 
 import { Metadata } from 'components/atoms/metadataProvider'
 import ErrorBoundary from 'components/atoms/errorBoundary'
@@ -9,12 +10,13 @@ import Overlay from 'components/atoms/overlay'
 import Cover from 'components/molecules/cover'
 import Controller from 'components/molecules/controller'
 import Info from 'components/molecules/info'
-import Playlists from 'components/molecules/playlists'
 import Footer from 'components/molecules/footer'
 
 import './music-player.styl'
 
 import MusicPlayerType from './types'
+
+const Playlists = dynamic(() => import("components/molecules/playlists"))
 
 const MusicPlayerLayout: MusicPlayerType = () => {
     let { showingPlaylist, isLight } = useContext(Metadata)
