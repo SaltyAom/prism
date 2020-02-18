@@ -8,8 +8,6 @@ import List from 'components/molecules/list'
 import './playlists.styl'
 
 const Playlists = memo(() => {
-    let { isLight } = useContext(Metadata)
-
     let playlists = useMemo(() => store.get("track"), [])
 
     return (
@@ -19,7 +17,7 @@ const Playlists = memo(() => {
                     title={title}
                     artist={artist}
                     cover={cover}
-                    isLight={isLight}
+                    isLight={useContext(Metadata).isLight}
                     index={index}
                     key={index}
                 />

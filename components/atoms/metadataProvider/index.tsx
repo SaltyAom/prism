@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useCallback } from 'react'
 
 import store from 'stores'
 
+import preImage from "pre-image"
 import { isServer } from 'libs/helpers'
 
 export const Metadata = createContext(null)
@@ -21,16 +22,19 @@ const MetadataProvider = ({ children }) => {
         []
     )
 
-    let setGlobalTrack = (selected: number) => {
+    let setGlobalTrack = useCallback((selected: number) => {
         let currentTrack = store.get('track')[selected]
 
         updateTrack(currentTrack)
         window.music = new Audio(currentTrack.src)
         window.music.onended = () => musicEndHandler()
-    }
+    }, [])
 
     useEffect(() => {
         if (isServer) return
+
+        let preImage$ = () => store.get("track").forEach(track => preImage(track.cover))
+        window.addEventListener("load", preImage$)
 
         setGlobalTrack(0)
         let isLight$ = store.subscribe('isLight', (state: boolean) => {
@@ -77,6 +81,7 @@ const MetadataProvider = ({ children }) => {
             editVolume$.unsubscribe()
             time$.unsubscribe()
             volume$.unsubscribe()
+            window.removeEventListener("load", preImage$)
         }
     }, [])
 
