@@ -21,7 +21,7 @@ const Skip = () => {
         document.addEventListener('keydown', ({ code }) => {
             if (code !== 'Space') return
 
-            document.getElementById('play-track-button').click()
+            store.set('isPlaying', false)
             ;(document.activeElement as HTMLElement).blur()
         })
 

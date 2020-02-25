@@ -2,10 +2,23 @@ import { createContext, useState, useEffect, useCallback } from 'react'
 
 import store from 'stores'
 
-import preImage from "pre-image"
+import preImage from 'pre-image'
 import { isServer } from 'libs/helpers'
 
+import {
+    updateTrack as requestTrack,
+    getNextTrack,
+    getPreviousTrack,
+} from 'libs/track'
+import { emitTime } from 'libs/time'
+
 export const Metadata = createContext(null)
+
+declare global {
+    interface Navigator {
+        mediaSession: any
+    }
+}
 
 const MetadataProvider = ({ children }) => {
     let [isLight, updateLight] = useState(false),
@@ -22,19 +35,71 @@ const MetadataProvider = ({ children }) => {
         []
     )
 
+    let reflectToMediaControl = useCallback(() => {
+        if ('mediaSession' in navigator) {
+            let track = store.get('track'),
+                active = store.get('active')
+
+            // @ts-ignore
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: track[active].title,
+                artist: track[active].artist,
+                // album: '',
+                artwork: [
+                    {
+                        src: track[active].cover,
+                        sizes: '512x512',
+                        type: 'image/png',
+                    },
+                ],
+            })
+
+            navigator.mediaSession.setActionHandler('play', () => {
+                store.set('isPlaying', true)
+                emitTime()
+            })
+            navigator.mediaSession.setActionHandler('pause', () => {
+                store.set('isPlaying', false)
+                emitTime()
+            })
+            navigator.mediaSession.setActionHandler('seekbackward', () => {
+                window.music.currentTime = window.music.currentTime - 5
+                emitTime()
+            })
+            navigator.mediaSession.setActionHandler('seekforward', () => {
+                window.music.currentTime = window.music.currentTime + 5
+                emitTime()
+            })
+            navigator.mediaSession.setActionHandler('previoustrack', () =>
+                requestTrack(getPreviousTrack())
+            )
+            navigator.mediaSession.setActionHandler('nexttrack', () =>
+                requestTrack(getNextTrack())
+            )
+        }
+    }, [])
+
     let setGlobalTrack = useCallback((selected: number) => {
+        if (document.getElementById('music') !== null)
+            document.body.removeChild(window.music)
+
         let currentTrack = store.get('track')[selected]
 
         updateTrack(currentTrack)
         window.music = new Audio(currentTrack.src)
         window.music.onended = () => musicEndHandler()
+        reflectToMediaControl()
+
+        if (document.getElementById('music') === null)
+            document.body.appendChild(window.music)
     }, [])
 
     useEffect(() => {
         if (isServer) return
 
-        let preImage$ = () => store.get("track").forEach(track => preImage(track.cover))
-        window.addEventListener("load", preImage$)
+        let preImage$ = () =>
+            store.get('track').forEach(track => preImage(track.cover))
+        window.addEventListener('load', preImage$)
 
         setGlobalTrack(0)
         let isLight$ = store.subscribe('isLight', (state: boolean) => {
@@ -44,6 +109,7 @@ const MetadataProvider = ({ children }) => {
                 else document.body.style.background = '#000'
             }),
             active$ = store.subscribe('active', (next: number) => {
+                document.body.appendChild(window.music)
                 // Preserve value
                 let volume = window.music.volume.valueOf()
 
@@ -53,6 +119,7 @@ const MetadataProvider = ({ children }) => {
                 setGlobalTrack(next)
                 window.music.play()
                 window.music.volume = volume
+                window.music.setAttribute('id', 'music')
 
                 store.update('isPlaying', true)
                 updateActive(next)
@@ -81,7 +148,7 @@ const MetadataProvider = ({ children }) => {
             editVolume$.unsubscribe()
             time$.unsubscribe()
             volume$.unsubscribe()
-            window.removeEventListener("load", preImage$)
+            window.removeEventListener('load', preImage$)
         }
     }, [])
 
