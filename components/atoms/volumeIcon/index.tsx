@@ -1,7 +1,5 @@
 import { useContext, memo } from 'react'
 
-import store from 'stores'
-
 import { Metadata } from 'components/atoms/metadataProvider'
 
 import './volume-icon.styl'
@@ -19,10 +17,6 @@ const VolumeIcon = memo(() => {
                     height="24"
                     viewBox="0 0 24 24"
                     width="24"
-                    tabIndex={0}
-                    onClick={() =>
-                        store.set('editVolume', !store.get('editVolume'))
-                    }
                 >
                     <path
                         className="fill"
@@ -40,10 +34,6 @@ const VolumeIcon = memo(() => {
                     height="24"
                     viewBox="0 0 24 24"
                     width="24"
-                    tabIndex={0}
-                    onClick={() =>
-                        store.set('editVolume', !store.get('editVolume'))
-                    }
                 >
                     <path
                         className="fill"
@@ -61,10 +51,6 @@ const VolumeIcon = memo(() => {
                     height="24"
                     viewBox="0 0 24 24"
                     width="24"
-                    tabIndex={0}
-                    onClick={() =>
-                        store.set('editVolume', !store.get('editVolume'))
-                    }
                 >
                     <path
                         className="fill"
@@ -82,10 +68,6 @@ const VolumeIcon = memo(() => {
                     height="24"
                     viewBox="0 0 24 24"
                     width="24"
-                    tabIndex={0}
-                    onClick={() =>
-                        store.set('editVolume', !store.get('editVolume'))
-                    }
                 >
                     <path
                         className="fill"

@@ -5,6 +5,7 @@ import store from 'stores'
 import { Metadata } from 'components/atoms/metadataProvider'
 
 import { isServer } from 'libs/helpers'
+import { emitTime } from 'libs/time'
 
 import './play.styl'
 
@@ -19,10 +20,23 @@ const Skip = () => {
         if (isServer) return
 
         document.addEventListener('keydown', ({ code }) => {
-            if (code !== 'Space') return
+            switch (code) {
+                case 'Space':
+                    if (window.music.paused) store.set('isPlaying', true)
+                    else store.set('isPlaying', false)
+                    ;(document.activeElement as HTMLElement).blur()
+                    break
 
-            store.set('isPlaying', false)
-            ;(document.activeElement as HTMLElement).blur()
+                case 'ArrowRight':
+                    window.music.currentTime = window.music.currentTime + 5
+                    emitTime()
+                    break
+
+                case 'ArrowLeft':
+                    window.music.currentTime = window.music.currentTime - 5
+                    emitTime()
+                    break
+            }
         })
 
         return () => window.music.pause()

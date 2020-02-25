@@ -18,6 +18,8 @@ const MusicPlaylistsToggler = () => {
                 isLight ? '-light' : ''
             }`}
             onClick={() => store.set('showPlaylist', !showingPlaylist)}
+            tabIndex={0}
+            aria-label={showingPlaylist ? "Show playlist" : "Hide playlist"}
         >
             <TrackName />
             <svg

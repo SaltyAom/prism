@@ -3,8 +3,10 @@ import { useState, useEffect, useRef, useCallback, useContext } from 'react'
 import { Metadata } from 'components/atoms/metadataProvider'
 
 import { isServer, toTimeFormat } from 'libs/helpers'
+import { emitTime } from 'libs/time'
 
 import './slider.styl'
+import store from 'stores'
 
 const Slider = () => {
     let [process, updateProcess] = useState(0),
@@ -12,7 +14,8 @@ const Slider = () => {
         [end, updateEnd] = useState(0)
 
     let isDragging = useRef(false),
-        initialEnd = useRef(1)
+        initialEnd = useRef(1),
+        playBeforeDrag = useRef(false)
 
     let { isLight, active, currentTime, isPlaying } = useContext(Metadata)
 
@@ -20,21 +23,18 @@ const Slider = () => {
         if (isServer) return
 
         let updateSlider = setInterval(() => {
-            if (!window.music.paused && !isDragging.current)
-                updateTime()
+            if (!window.music.paused && !isDragging.current) updateTime()
         }, 500)
 
         return () => clearInterval(updateSlider)
     }, [])
 
     useEffect(() => {
-        if (!isServer)
-            init()
+        if (!isServer) init()
     }, [active])
 
     useEffect(() => {
-        if (!isServer && typeof window.music !== "undefined")
-            updateTime()
+        if (!isServer && typeof window.music !== 'undefined') updateTime()
     }, [isPlaying, currentTime])
 
     let init = useCallback(
@@ -55,10 +55,6 @@ const Slider = () => {
     )
 
     let handleDrag = useCallback(() => {
-        isDragging.current = true
-        if(!window.music.paused)
-            window.music.pause()
-
         let slider = document.getElementById('slider') as HTMLInputElement,
             value = +slider.value
 
@@ -67,11 +63,22 @@ const Slider = () => {
         updateProcess((value / initialEnd.current) * 100)
     }, [])
 
-    let handleDragEnd = () => {
-        isDragging.current = false
-        if(isPlaying)
-            window.music.play()
-    }
+    let handleDragStart = useCallback(() => {
+        if(!isDragging.current)
+            playBeforeDrag.current = store.get("isPlaying")
+
+        isDragging.current = true
+
+        if (!window.music.paused) window.music.pause()
+    }, [])
+
+    let handleDragEnd = useCallback(() => {
+        setTimeout(() => {
+            if (playBeforeDrag.current) window.music.play()
+            isDragging.current = false
+            emitTime()
+        }, 50)
+    }, [])
 
     let updateTime = useCallback(() => {
         updateTimer(window.music.currentTime)
@@ -89,6 +96,7 @@ const Slider = () => {
                 value={timer}
                 onChange={() => handleDrag()}
                 onInput={() => handleDrag()}
+                onMouseDown={() => handleDragStart()}
                 onMouseUp={() => handleDragEnd()}
             />
             <div
