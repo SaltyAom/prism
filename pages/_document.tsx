@@ -8,8 +8,8 @@ class MusicPlayerDocument extends Document {
                     <meta name="title" content="Prism" />
                     <meta name="description" content="Progressive Web App as Music Player." />
                     <meta name="author" content="SaltyAom" />
-                    <link rel="icon" href="/images/dokodayo.png" />
-                    <link rel="shortcut icon" href="/images/dokodayo.png" />
+                    <link rel="icon" href="/images/kokodayo.png" />
+                    <link rel="shortcut icon" href="/images/kokodayo.png" />
 
                     <meta property="og:title" content="Prism" />
                     <meta
@@ -67,7 +67,7 @@ class MusicPlayerDocument extends Document {
                     />
                     <link
                         rel="apple-touch-icon"
-                        href="/images/dokodayo.png"
+                        href="/images/kokodayo.png"
                     />
                     <meta
                         name="apple-mobile-web-app-status-bar-style"
